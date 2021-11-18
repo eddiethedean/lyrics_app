@@ -8,7 +8,7 @@ app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
-folder = 'models/ATG_20211117_134132'
+folder = 'http://s3.amazonaws.com/lyrics-app-s3/models/ATG_20211117_134132'
 ai = aitextgen(model_folder=folder, to_gpu=False)
 
 
