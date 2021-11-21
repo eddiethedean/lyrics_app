@@ -1,4 +1,4 @@
-models/
+models/ATG_20211117_134132/pytorch_model.bin
 aws_key_pair1.cer
 lyrics_env/
 .env

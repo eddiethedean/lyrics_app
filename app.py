@@ -2,13 +2,36 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 from aitextgen import aitextgen
+import botocore
+import boto3
+import os
+from os.path import exists
 
+
+access_key = os.getenv('AWS_ACCESS_KEY_ID')
+secret = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+s3 = boto3.resource(
+    's3',
+    aws_access_key_id=access_key,
+    aws_secret_access_key=secret
+)
+
+BUCKET_NAME = 'lyrics-app'
+KEY = 'ATG_20211117_134132/pytorch_model.bin'
+file_path = f'models/{KEY}'
+
+
+file_exists = exists(file_path)
+
+if not file_exists:
+    s3.Bucket(BUCKET_NAME).download_file(KEY, file_path)
 
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
-folder = 'https://lyrics-app-s3.s3.amazonaws.com/models/ATG_20211117_134132/'
+folder = 'models/ATG_20211117_134132/'
 ai = aitextgen(model_folder=folder, to_gpu=False)
 
 
